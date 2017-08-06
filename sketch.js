@@ -1,39 +1,38 @@
-var thumb = new Metacarpal(0.5, 0.1, 0,
+var thumb = new Metacarpal(0.7, 0.1, 0,
               new Phalanx(0.4, 0.1,
-                new Phalanx(0.2)
+                new Phalanx(0.24)
               )
             );
 var index = new Metacarpal(1, 0.1, 0,
               new Phalanx(.55, 0.1,
                 new Phalanx(0.4, 0.06,
-                  new Phalanx(0.2)
+                  new Phalanx(0.24)
                 )
               )
             );
 var middle = new Metacarpal(1, 0.1, 0,
               new Phalanx(.6, 0.1,
                 new Phalanx(0.4, 0.06,
-                  new Phalanx(0.2)
+                  new Phalanx(0.24)
                 )
               )
             );
 var ring = new Metacarpal(0.9, 0.1, 0.03,
               new Phalanx(.6, 0.1,
                 new Phalanx(0.4, 0.06,
-                  new Phalanx(0.2)
+                  new Phalanx(0.24)
                 )
               )
             );
 var pinky = new Metacarpal(0.75, 0.1, 0.05,
               new Phalanx(.55, 0.1,
                 new Phalanx(0.3, 0.06,
-                  new Phalanx(0.2)
+                  new Phalanx(0.22)
                 )
               )
             );
 var digits = [thumb, index, middle, ring, pinky];
-var hand = new CarpalGroup(0, 0, 0, digits);
-
+var hand = new Hand(new CarpalGroup(0, 0, 0, digits));
 
 function setup() {
   createCanvas(400, 500, WEBGL);
@@ -45,10 +44,10 @@ function draw() {
   translate(0, -150, 0)
   ambientLight(100);
   pointLight(255, 255, 255, -1, 2, 2);
-  rotateY(frameCount*0.005);
-  // axisRose(40);
+  rotateY(PI/2 + frameCount*0.005);
   ambientMaterial(250);
   hand.draw();
+  hand.makeFist(sin(frameCount*0.003)*sin(frameCount*0.003));
 }
 
 function axisRose(r) {
