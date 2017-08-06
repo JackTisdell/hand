@@ -7,7 +7,7 @@ function Phalanx(length, flexion, phalanx) {
     extend(this.length);
     hinge(this.flexion, 5);
     if (this.phalanx) {
-      this.phalanx.phalanx ? ambientMaterial(0, 0, 200) : ambientMaterial(200, 0, 0);
+      // this.phalanx.phalanx ? ambientMaterial(0, 0, 200) : ambientMaterial(200, 0, 0);
       this.phalanx.draw();
     }
   }
@@ -24,12 +24,14 @@ function Metacarpal(length, flexion, abduction, phalanx) {
     extend(this.length)
     rotateZ(this.abduction);
     hinge(this.flexion, 5);
-    ambientMaterial(0, 200, 0);
+    // ambientMaterial(0, 200, 0);
     this.phalanx.draw();
   }
+
 }
 
-function CarpalGroup(thumbFlexion, thumbAdduction, metacarpalSpread, digits) {
+function CarpalGroup(thumbFlexion, thumbAdduction,
+                      metacarpalSpread, digits) {
   this.thumbFlexion = thumbFlexion;
   this.thumbAdduction = thumbAdduction;
   this.metacarpalSpread = metacarpalSpread;
@@ -95,8 +97,12 @@ function CarpalGroup(thumbFlexion, thumbAdduction, metacarpalSpread, digits) {
   this.draw = function() {
     var base = 100; //width of carpal group
     var spread = map(this.metacarpalSpread, 0, 1, 1, 1.4);
-    ambientMaterial(120, 0, 180);
-    box(base, 20, 20);
+    // ambientMaterial(120, 0, 180);
+    box(base + 20, 20, 24);
+    // push();
+    //   rotateZ(PI/2);
+    //   cylinder(10, base);
+    // pop();
     push();
       translate(base/2, 0, 0);
       rotateX(-PI/12);
@@ -107,7 +113,7 @@ function CarpalGroup(thumbFlexion, thumbAdduction, metacarpalSpread, digits) {
       // axisRose(40);
       rotateX(-this.thumbAdduction);
       rotateY(-PI/4)
-      ambientMaterial(255, 140, 0);
+      // ambientMaterial(255, 140, 0);
       this.digits[0].draw();
     pop();
     push();
@@ -115,7 +121,7 @@ function CarpalGroup(thumbFlexion, thumbAdduction, metacarpalSpread, digits) {
         push();
           translate(-base/4*(i-1), 0);  // translate to metacarpal base
           rotateZ(-PI/36*spread * (i-1)); // abduct metacarpal bone
-          ambientMaterial(255, 140, 0);
+          // ambientMaterial(255, 140, 0);
           this.digits[i+1].draw();
         pop();
       }
@@ -134,60 +140,70 @@ function Hand(carpalGroup) {
 
   this.openPalm = function() {
     var cg = this.carpalGroup;
-    cg.setMCPAbductions(OPEN_PALM_STATE.mcpAbducitons);
-    cg.setMCPFlexions(OPEN_PALM_STATE.mcpFlexions);
-    cg.setPIPFlexions(OPEN_PALM_STATE.pipFlexions);
-    cg.setDIPFlexions(OPEN_PALM_STATE.dipFlexion);
-    cg.thumbFlexion = OPEN_PALM_STATE.thumbFlexion;
-    cg.thumbAdduction = OPEN_PALM_STATE.thumbAdduction;
+    cg.setMCPAbductions(OPEN_PALM.mcpAbducitons);
+    cg.setMCPFlexions(OPEN_PALM.mcpFlexions);
+    cg.setPIPFlexions(OPEN_PALM.pipFlexions);
+    cg.setDIPFlexions(OPEN_PALM.dipFlexion);
+    cg.thumbFlexion = OPEN_PALM.thumbFlexion;
+    cg.thumbAdduction = OPEN_PALM.thumbAdduction;
   }
 
   this.fist = function() {
     var cg = this.carpalGroup;
-    cg.setMCPAbductions(FIST_STATE.mcpAbductions);
-    cg.setMCPFlexions(FIST_STATE.mcpFlexions);
-    cg.setPIPFlexions(FIST_STATE.pipFlexions);
-    cg.setDIPFlexions(FIST_STATE.dipFlexions);
-    cg.thumbFlexion = FIST_STATE.thumbFlexion;
-    cg.thumbAdduction = FIST_STATE.thumbAdduction;
+    cg.setMCPAbductions(FIST.mcpAbductions);
+    cg.setMCPFlexions(FIST.mcpFlexions);
+    cg.setPIPFlexions(FIST.pipFlexions);
+    cg.setDIPFlexions(FIST.dipFlexions);
+    cg.thumbFlexion = FIST.thumbFlexion;
+    cg.thumbAdduction = FIST.thumbAdduction;
   }
 
   this.makeFist = function(t) {
     var cg = this.carpalGroup;
     cg.setMCPAbductions(
-      lerpArray(OPEN_PALM_STATE.mcpAbductions, FIST_STATE.mcpAbductions, t));
+      lerpArray(OPEN_PALM.mcpAbductions, FIST.mcpAbductions, t));
     cg.setMCPFlexions(
-      lerpArray(OPEN_PALM_STATE.mcpFlexions, FIST_STATE.mcpFlexions, t));
+      lerpArray(OPEN_PALM.mcpFlexions, FIST.mcpFlexions, t));
     cg.setPIPFlexions(
-      lerpArray(OPEN_PALM_STATE.pipFlexions, FIST_STATE.pipFlexions, t));
+      lerpArray(OPEN_PALM.pipFlexions, FIST.pipFlexions, t));
     cg.setDIPFlexions(
-      lerpArray(OPEN_PALM_STATE.dipFlexions, FIST_STATE.dipFlexions, t));
+      lerpArray(OPEN_PALM.dipFlexions, FIST.dipFlexions, t));
     cg.thumbFlexion =
-      lerp(OPEN_PALM_STATE.thumbFlexion, FIST_STATE.thumbFlexion, pow(t,12));
+      lerp(OPEN_PALM.thumbFlexion, FIST.thumbFlexion, pow(t,12));
     cg.thumbAdduction =
-      lerp(OPEN_PALM_STATE.thumbAdduction, FIST_STATE.thumbAdduction, t);
+      lerp(OPEN_PALM.thumbAdduction, FIST.thumbAdduction, t);
   }
 }
 
 // HAND STATES
 
-const OPEN_PALM_STATE = {
-  mcpAbductions: [0, 0, 0, .03, .05],
-  mcpFlexions: [.1, .1, .1, .1, .1],
-  pipFlexions: [.1, .1, .1, .1, .1],
-  dipFlexions: [.06, .06, .06, .06],
-  thumbFlexion: 0,
-  thumbAdduction: 0
+function JointState(mcpAbductions, mcpFlexions, pipFlexions,
+                    dipFlexions, thumbFlexion, thumbAdduction) {
+  this.mcpAbductions = mcpAbductions;
+  this.mcpFlexions = mcpFlexions;
+  this.pipFlexions = pipFlexions;
+  this.dipFlexions = dipFlexions;
+  this.thumbFlexion = thumbFlexion;
+  this.thumbAdduction = thumbAdduction;
 }
 
-const FIST_STATE = {
-  mcpAbductions: [-.3, -.07, -0.03, 0, 0],
-  mcpFlexions: [.9, 1.4, 1.5, 1.5, 1.6],
-  pipFlexions: [1.2, 2, 2, 2, 2],
-  dipFlexions: [1.4, 1.4, 1.4, 1.4],
-  thumbFlexion: .6,
-  thumbAdduction: .2
-}
+const OPEN_PALM = new JointState(
+  [0, 0, 0, .03, .05],
+  [.1, .1, .1, .1, .1],
+  [.1, .1, .1, .1, .1],
+  [.06, .06, .06, .06],
+  0,
+  0
+)
+
+const FIST = new JointState(
+  [-.3, -.07, -0.03, 0, 0],
+  [.9, 1.4, 1.5, 1.5, 1.6],
+  [1.2, 2.1, 2, 2, 2],
+  [1.4, 1.4, 1.4, 1.4],
+  .6,
+  .27
+)
 
 // HELPER FUNCTIONS
 
@@ -195,7 +211,8 @@ var k = 150; // thsi is the proportionality constant for the bone lengths
 function extend(r) {
   r *= k;
   translate(0, r/2, 0);
-  box(14, r, 20);
+  box(20, r, 24);
+  // cylinder(10, r);
   translate(0, r/2, 0);
 }
 function hinge(angle, offset) {

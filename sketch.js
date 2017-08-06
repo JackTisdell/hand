@@ -3,8 +3,8 @@ var thumb = new Metacarpal(0.7, 0.1, 0,
                 new Phalanx(0.24)
               )
             );
-var index = new Metacarpal(1, 0.1, 0,
-              new Phalanx(.55, 0.1,
+var index = new Metacarpal(.98, 0.1, 0,
+              new Phalanx(.57, 0.1,
                 new Phalanx(0.4, 0.06,
                   new Phalanx(0.24)
                 )
@@ -45,7 +45,7 @@ function draw() {
   ambientLight(100);
   pointLight(255, 255, 255, -1, 2, 2);
   rotateY(PI/2 + frameCount*0.005);
-  ambientMaterial(250);
+  normalMaterial();
   hand.draw();
   hand.makeFist(sin(frameCount*0.003)*sin(frameCount*0.003));
 }
