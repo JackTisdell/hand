@@ -162,7 +162,8 @@ function Hand(carpalGroup) {
       lerpArray(OPEN_PALM_STATE.pipFlexions, FIST_STATE.pipFlexions, t));
     cg.setDIPFlexions(
       lerpArray(OPEN_PALM_STATE.dipFlexions, FIST_STATE.dipFlexions, t));
-    cg.thumbFlexion = lerp(OPEN_PALM_STATE.thumbFlexion, FIST_STATE.thumbFlexion, pow(t,12));
+    cg.thumbFlexion =
+      lerp(OPEN_PALM_STATE.thumbFlexion, FIST_STATE.thumbFlexion, pow(t,12));
     cg.thumbAdduction =
       lerp(OPEN_PALM_STATE.thumbAdduction, FIST_STATE.thumbAdduction, t);
   }
